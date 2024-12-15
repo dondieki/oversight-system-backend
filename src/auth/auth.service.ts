@@ -60,7 +60,7 @@ export class AuthService {
       // Send the email with the reset password link
       await this.mailerService.sendMail({
         to: email,
-        subject: 'Welcome to Flight Guardian',
+        subject: 'Aviation Service Providers Safety Oversight System',
         template: './invite',
         context: {
           firstName: firstName,
