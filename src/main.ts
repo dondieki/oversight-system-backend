@@ -12,7 +12,7 @@ async function bootstrap() {
   // Allowed origins list
   const allowedOrigins = [
     'http://localhost:4200',
-    'https://airport-panel.vercel.app',
+    'https://oversight-system.vercel.app',
   ];
 
   // Enable CORS with refined configuration
