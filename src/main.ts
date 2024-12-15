@@ -1,13 +1,8 @@
 import { NestFactory } from '@nestjs/core';
-import { AllExceptionsFilter } from './all-exceptions.filter';
 import { AppModule } from './app.module';
 
 async function bootstrap() {
-  const app = await NestFactory.create(AppModule, {
-    logger: ['log', 'error', 'warn', 'debug', 'verbose'],
-  });
-
-  app.useGlobalFilters(new AllExceptionsFilter());
+  const app = await NestFactory.create(AppModule);
 
   // Allowed origins list
   const allowedOrigins = [
@@ -25,6 +20,7 @@ async function bootstrap() {
       }
     },
     methods: 'GET,HEAD,PUT,PATCH,POST,DELETE',
+    allowedHeaders: 'Content-Type,Authorization',
     credentials: true,
   });
 
