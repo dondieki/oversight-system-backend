@@ -325,13 +325,13 @@ export class IssuesService {
         query.isResolved = status;
       }
       if (entity !== 'All') {
-        query.entity = entity;
+        query[entity] = { $exists: true };
       }
 
       // Fetch data from the database and populate references
       const issues = await this.issueModel
         .find(query)
-        .populate('airportId', 'name location')
+        .populate('airportId', 'name')
         .populate('runwayId', 'name')
         .populate('taxiwayId', 'name')
         .populate('airlineId', 'name code')
@@ -347,7 +347,6 @@ export class IssuesService {
       worksheet.columns = [
         { header: 'Issue ID', key: '_id', width: 25 },
         { header: 'Airport Name', key: 'airportName', width: 20 },
-        { header: 'Airport Location', key: 'airportLocation', width: 20 },
         { header: 'Runway Name', key: 'runwayName', width: 20 },
         { header: 'Taxiway Name', key: 'taxiwayName', width: 20 },
         { header: 'Airline Name', key: 'airlineName', width: 20 },
@@ -370,7 +369,6 @@ export class IssuesService {
         worksheet.addRow({
           _id: issue._id,
           airportName: issue.airportId?.['name'] || 'N/A',
-          airportLocation: issue.airportId?.['location'] || 'N/A',
           runwayName: issue.runwayId?.['name'] || 'N/A',
           taxiwayName: issue.taxiwayId?.['name'] || 'N/A',
           airlineName: issue.airlineId?.['name'] || 'N/A',
@@ -386,7 +384,7 @@ export class IssuesService {
       });
 
       // Save the file locally
-      const filePath = path.join(__dirname, 'issues-report.xlsx');
+      const filePath = path.join('/tmp', 'issues-report.xlsx');
       await workbook.xlsx.writeFile(filePath);
 
       // Send email with the report
